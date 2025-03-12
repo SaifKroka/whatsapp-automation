@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Automation</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        input, button { margin: 10px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h2>WhatsApp Automation Tool</h2>
+    <input type="text" id="fromNumber" placeholder="Your WhatsApp Number" required>
+    <input type="text" id="toNumber" placeholder="Recipient Number" required>
+    <input type="text" id="message" placeholder="Enter Message" required>
+    <button onclick="sendMessage()">Send</button>
+    <p id="status"></p>
+
+    <script>
+        async function sendMessage() {
+            const fromNumber = document.getElementById('fromNumber').value;
+            const toNumber = document.getElementById('toNumber').value;
+            const message = document.getElementById('message').value;
+            
+            if (!fromNumber || !toNumber || !message) {
+                alert('All fields are required!');
+                return;
+            }
+            
+            const response = await fetch('/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fromNumber, toNumber, message })
+            });
+            
+            const result = await response.json();
+            document.getElementById('status').innerText = result.message;
+        }
+    </script>
+</body>
+</html>
